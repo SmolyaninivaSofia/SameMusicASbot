@@ -11,4 +11,8 @@ def send_welcome(message):
 def echo_all(message):
     bot.reply_to(message,message.text)
 
-bot.polling()
+while (True):
+	try:
+		bot.polling()
+	except Exception:
+		pass

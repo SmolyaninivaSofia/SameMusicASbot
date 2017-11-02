@@ -1,1 +1,1 @@
-web: python TelegramBot/EchoTelegramBot.py
+worker: python TelegramBot/EchoTelegramBot.py

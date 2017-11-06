@@ -1,6 +1,7 @@
-.idea
 TelegramBot/config.py
 TelegramBot/lastfm_subset
+TelegramBot/__pycache__
+TelegramBot/.idea
 Procfile
 runtime.txt
-TelegramBot/__pycache__
+requirements.txt

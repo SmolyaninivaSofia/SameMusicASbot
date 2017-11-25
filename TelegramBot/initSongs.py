@@ -1,11 +1,9 @@
 import json
 import os
+import psycopg2
 
 fileList = []
 resSongs=[]
-
-#recommended call:
-#songs=getSongs() - write this songs list to database
 
 def findFiles():
     directory =os.walk('lastfm_subset')
@@ -31,6 +29,5 @@ def getSongs():
                 tags=data['tags']
                 tt=fillTags(tags)
                 if len(tt)>2:
-                    resSongs.append((data['artist'], data['title'], data['track_id'], tt))
-    print("getSongs finished")
+                    resSongs.append((data['artist'], data['title'], tt))
     return resSongs

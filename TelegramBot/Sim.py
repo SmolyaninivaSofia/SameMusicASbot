@@ -1,7 +1,8 @@
-import initSongs as s
+import BDConn as bd
 import math
+import initSongs as init
 
-songs=s.getSongs()
+songs=bd.SelectGet()
 sims={}
 badsongslist=[]
 
@@ -26,10 +27,10 @@ def sim(song):
             res=mpsitag/(len(song[3])+len(item[3])-mpsitag)
             #song[0]+" "+song[1] need to change for song_id
             #item[0]+" "+item[1] need to change for item_id
-            if sims.get(song[0]+" "+song[1]) is None:
-                sims[song[0]+" "+song[1]]={item[0]+" "+item[1]:res}
+            if sims.get(song[0]) is None:
+                sims[song[0]]={item[0]:res}
             else:
-                sims[song[0]+" "+song[1]].update({item[0]+" "+item[1]:res})
+                sims[song[0]].update({item[0]:res})
 
 
 
@@ -47,26 +48,24 @@ def findbadsongs():
         count5=0
         for r in rates:
             if r[1]>0.16:
-                #0.5 17..
-                #0.1 106
-                #0.15 271
-                #0.16 292
-                #0.17 412
-                #0.175 414
-                #0.2 664
                 count5 += 1
         if (count5==0):
             badsongs+=1
             badsongslist.append(item)
-    print(badsongs)
+    for bad in badsongslist:
+        bd.InsertBadSongs(bad)
+        bd.DeleteBadSongs(bad)
 
 def calcSimsAndWriteInDB():
     for song in songs:
         sim(song)
     for item in sims:
-        rates=sorted(sims[item].items(),key=lambda x: x[1])
-        rates=rates[len(rates)-10:len(rates)]
+        rates=sorted(sims[item].items(),key=lambda x: x[1], reverse=True)[:10]
+        s =[]
         for r in rates:
             if r[1]>0.16:
-                #change for write in db, where item - first song id, r[0] second song id, r[1] coefficient of sim
-                print(item,r[0],r[1])
+                s.append(str(r[0]))
+        list_sim=(','.join(s))
+        bd.UpdateSimilars(list_sim,item)
+
+#findbadsongs()

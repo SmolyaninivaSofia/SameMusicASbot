@@ -59,20 +59,19 @@ def SelectSimilars(song):
     if len(row) != 0:
         sim_list = row[0][0].split(',')
         same_song_list=[]
-        for song in sim_list:
-            cur.execute("""SELECT artist||'-'||title FROM song WHERE track_id =%s;""", (int(song),))
+        for s in sim_list:
+            cur.execute("""SELECT artist||'-'||title FROM song WHERE track_id =%s;""", (int(s),))
             same_song_list.append(cur.fetchall())
         res=''
         num=1
         for same_song in same_song_list:
             res+=str(num)+'. '+same_song[0][0]+'\n'
             num+=1
+        res='List of songs simmilar to '+song.upper()+'\n'+res
     else:
-        res="No data found"
+        res="Sorry...This song have no simmilars :( \nOr you can make a mistake"
     return res
-#List
-str=SelectSimilars("rihanna-Don't Stop The Music")
-print(str)
+
 
 
 
